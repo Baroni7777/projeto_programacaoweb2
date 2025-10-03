@@ -1,0 +1,20 @@
+{
+  "folders": [
+    {
+      "path": "nest_academico"
+    },
+    {
+      "path": "react_academico"
+    }
+  ],
+  "settings": {
+    "terminal.integrated.env.windows": {
+      "PATH": "D:\\aluno_nome\\nodejs;${env:PATH}"
+    },
+    "editor.formatOnSave": true,
+    "files.exclude": {
+      "**/node_modules": true,
+      "**/dist": true
+    }
+  }
+}
