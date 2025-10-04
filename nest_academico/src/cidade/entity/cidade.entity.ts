@@ -3,7 +3,7 @@ import { BaseEntity } from '../../commons/entity/base.entity';
 
 @Entity('CIDADE')
 export class Cidade extends BaseEntity {
-  @PrimaryGeneratedColumn('increment', {
+  @PrimaryGeneratedColumn({
     name: 'ID_CIDADE',
     type: 'number',
   })
@@ -11,14 +11,14 @@ export class Cidade extends BaseEntity {
 
   @Column({
     name: 'COD_CIDADE',
-    type: 'varchar2',
+    type: 'nvarchar2',
     length: 10,
   })
   codCidade: string = '';
 
   @Column({
     name: 'NOME_CIDADE',
-    type: 'varchar2',
+    type: 'nvarchar2',
     length: 50,
   })
   nomeCidade: string = '';

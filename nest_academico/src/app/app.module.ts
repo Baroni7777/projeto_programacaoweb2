@@ -39,6 +39,10 @@ oracledb.initOracleClient({
         autoLoadEntities: configService.get('DATABASE_AUTOLOADENTITIES'),
         synchronize: configService.get('DATABASE_SYNCHRONIZE'),
         logging: ['query', 'error'],
+        entities: [__dirname + '/../**/*.entity{.ts,.js}'],
+        extra: {
+          connectionTimeout: 30000,
+        },
       }),
     }),
     CidadeModule,
