@@ -8,7 +8,7 @@ async function bootstrap() {
   app.useGlobalFilters(new HttpExceptionFilter());
 //Configuração do CORS
   app.enableCors({
-    origin: ['http://localhost:3000', 'http://localhost:8001'],
+    origin: ['http://localhost:3000', 'http://localhost:8000'],
     methods: 'GET, POST, PUT, DELETE',
     allowedHeaders: 'Content-Type, Accept',
     credentials: false,

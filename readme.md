@@ -54,3 +54,16 @@ No controller toda a resposta é convertida para um json
 
 
 quando é erro nao converte para json, precisa de ser convertido manualmente 
+
+
+
+
+
+
+
+
+
+
+
+Fazer o diagrama, numerado por onde começar por 1 2 etc, deve ser feito no começo do projeto, antes de começar a codar.
+subir para o professor tudo, menos o nodemodules.

@@ -1,19 +1,14 @@
-import './App.css'
-import Layout from './components/layout/Layout'
-import Lista from './views/cidade/lista'
+import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import { routes } from "./services/router/Router";
+
+const router = createBrowserRouter(routes);
 
 function App() {
   return (
     <div>
-          {/* Componente pai - Layout
-              Componente Filho - Lista
-               */}
-        <Layout>
-           <Lista />  {/* Lista - Children */}
-        </Layout>
-        
+      <RouterProvider router={router} />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
