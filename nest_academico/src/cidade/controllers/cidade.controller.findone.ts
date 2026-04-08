@@ -7,30 +7,35 @@ import {
   ParseIntPipe,
   Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { ROTA } from '../../commons/constants/url.sistema';
+import { ApiGetDoc } from '../../commons/decorators/swagger.decorators';
+import { Result } from '../../commons/mensagem/mensagem';
+import { MensagemSistema } from '../../commons/mensagem/mensagem.sistema';
+import { gerarLinks } from '../../commons/utils/hateoas.utils';
+import { CIDADE } from '../constants/cidade.constants';
 import { CidadeResponse } from '../dto/response/cidade.response';
 import { CidadeServiceFindOne } from '../service/cidade.service.findone';
-import { MensagemSistema } from 'src/commons/mensagem/mensagem.sistema';
-import { result } from 'src/commons/mensagem/mensagem';
-import type { Request } from 'express';
-
 @Controller(ROTA.CIDADE.BASE)
 export class CidadeControllerFindOne {
   constructor(private readonly cidadeServiceFindOne: CidadeServiceFindOne) {}
 
   @HttpCode(HttpStatus.OK)
   @Get(ROTA.CIDADE.BY_ID)
+  @ApiGetDoc(CIDADE.OPERACAO.POR_ID, CidadeResponse)
   async findOne(
     @Req() req: Request,
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<result<CidadeResponse | null>> {
+  ): Promise<Result<CidadeResponse>> {
+    const _link = gerarLinks(req, CIDADE.ENTITY, id);
     const response = await this.cidadeServiceFindOne.findOne(id);
-    return MensagemSistema.showMensagem({
-      status: HttpStatus.OK,
-      mensagem: 'cidade ENCONTRADA com sucesso!',
-      dados: response,
-      path: req.path,
-      erro: null,
-    });
+    return MensagemSistema.showMensagem(
+      HttpStatus.OK,
+      'Cidade localizada com sucesso!',
+      response,
+      req.path,
+      null,
+      _link,
+    );
   }
 }

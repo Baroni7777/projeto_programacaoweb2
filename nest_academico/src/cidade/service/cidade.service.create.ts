@@ -1,10 +1,10 @@
-import { HttpStatus, Injectable, HttpException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ConverterCidade } from '../dto/converter/cidade.converter';
 import { CidadeRequest } from '../dto/request/cidade.request';
-import { Cidade } from '../entity/cidade.entity';
 import { CidadeResponse } from '../dto/response/cidade.response';
+import { Cidade } from '../entity/cidade.entity';
 
 @Injectable()
 export class CidadeServiceCreate {
@@ -13,20 +13,23 @@ export class CidadeServiceCreate {
     private cidadeRepository: Repository<Cidade>,
   ) {}
 
-  async create(cidadeRequest: CidadeRequest): Promise<CidadeResponse | null> {
+  async create(cidadeRequest: CidadeRequest): Promise<CidadeResponse> {
     let cidade = ConverterCidade.toCidade(cidadeRequest);
 
-      const cidadeCadastrada = await this.cidadeRepository.createQueryBuilder('cidade')
-      .where('cidade.nomeCidade = :nome', { nome: cidade.nomeCidade })
+    const cidadeCadastrada = await this.cidadeRepository
+      .createQueryBuilder('cidade')
+      .where('cidade.nomeCidade =:nome', { nome: cidade.nomeCidade })
       .getOne();
 
-      if(cidadeCadastrada)  {
-        throw new HttpException('Cidade com o nome informado já esta cadastrada ', HttpStatus.BAD_REQUEST
+    if (cidadeCadastrada) {
+      throw new HttpException(
+        'Cidade com nome informada já está cadastrada',
+        HttpStatus.BAD_REQUEST,
       );
-      }
+    }
 
-      cidade = await this.cidadeRepository.save(cidade);
+    cidade = await this.cidadeRepository.save(cidade);
 
-    return null;
+    return ConverterCidade.toCidadeResponse(cidade);
   }
 }

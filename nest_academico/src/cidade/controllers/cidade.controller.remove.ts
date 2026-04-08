@@ -7,29 +7,33 @@ import {
   ParseIntPipe,
   Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { ROTA } from '../../commons/constants/url.sistema';
+import { Result } from '../../commons/mensagem/mensagem';
+import { MensagemSistema } from '../../commons/mensagem/mensagem.sistema';
+import { gerarLinks } from '../../commons/utils/hateoas.utils';
+import { CIDADE } from '../constants/cidade.constants';
 import { CidadeServiceRemove } from '../service/cidade.service.remove';
-import { result } from 'src/commons/mensagem/mensagem';
-import { MensagemSistema } from 'src/commons/mensagem/mensagem.sistema';
-import type { Request } from 'express';
 
 @Controller(ROTA.CIDADE.BASE)
 export class CidadeControllerRemove {
   constructor(private readonly cidadeServiceRemove: CidadeServiceRemove) {}
 
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.OK) //NO_CONTENT
   @Delete(ROTA.CIDADE.DELETE)
   async remove(
-    @Req() req: Request,
+    @Req() res: Request,
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<result<null>> {
+  ): Promise<Result<void>> {
+    const _link = gerarLinks(res, CIDADE.ENTITY);
     await this.cidadeServiceRemove.remove(id);
-    return MensagemSistema.showMensagem({
-      status: HttpStatus.OK,
-      mensagem: 'cidade REMOVIDA com sucesso!',
-      dados: null,
-      path: req.path,
-      erro: null,
-    });
+    return MensagemSistema.showMensagem(
+      HttpStatus.OK,
+      'Cidade excluída com sucesso!',
+      null,
+      res.path,
+      null,
+      _link,
+    );
   }
 }

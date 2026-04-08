@@ -22,7 +22,7 @@ export default function ListarCidade() {
   // useState = hook - gancho - função
   // reagir as alterações na variável
   // renderiza -
-  const [models, setModels] = useState<Cidade[] | null>(null);
+  const [models, setModels] = useState<Cidade[]>([]);
 
   //hook - função - reagir, quando carregar a página
   //pela primeira vez, quando o array for vázio.
@@ -30,7 +30,7 @@ export default function ListarCidade() {
     async function getCidades() {
       const cidades = await buscarTodasCidades();
       if (cidades) {
-        setModels(cidades);
+        setModels(Array.isArray(cidades) ? cidades : []);
       }
     }
     getCidades();
@@ -68,7 +68,7 @@ export default function ListarCidade() {
             </tr>
           </thead>
           <tbody>
-            {models?.map((model) => (
+            {(Array.isArray(models) ? models : []).map((model) => (
               <tr key={model.idCidade}>
                 <td>{model.codCidade}</td>
                 <td>{model.nomeCidade}</td>

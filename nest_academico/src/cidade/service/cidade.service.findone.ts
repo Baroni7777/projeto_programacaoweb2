@@ -1,4 +1,4 @@
-import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ConverterCidade } from '../dto/converter/cidade.converter';
@@ -12,16 +12,11 @@ export class CidadeServiceFindOne {
     private cidadeRepository: Repository<Cidade>,
   ) {}
 
-  async findOne(idCidade: number): Promise<CidadeResponse | null> {
-    const cidade = await this.cidadeRepository
-      .createQueryBuilder('cidade')
-      .where('cidade.ID_CIDADE = :idCidade', { idCidade: idCidade })
-      .getOne();
+  async findOne(idCidade: number): Promise<CidadeResponse> {
+    const cidade = await this.findById(idCidade);
 
- 
     if (!cidade) {
-      throw new HttpException('Cidade não localizada ', HttpStatus.NOT_FOUND
-      );
+      throw new HttpException('Cidade não cadastrada', HttpStatus.NOT_FOUND);
     }
 
     return ConverterCidade.toCidadeResponse(cidade);
